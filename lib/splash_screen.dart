@@ -1,11 +1,16 @@
 import 'dart:async';
 
-import 'package:dogly_front/home/home_screen.dart';
 import 'package:dogly_front/main_page.dart';
+import 'package:dogly_front/profile/models/user.dart';
+import 'package:dogly_front/profile/models/user_notifier.dart';
+import 'package:dogly_front/services/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'dogs/bloc/dog_bloc.dart';
 import 'login/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -19,23 +24,40 @@ class _SplashScreenState extends State<SplashScreen> {
   Timer? timer;
   String? email;
   String? username;
-
-
+  String? token;
 
   @override
   void initState() {
-    SharedPreferences.getInstance().then((value) {
-      email=value.getString("email");
-      username=value.getString("username");
-      timer = Timer(
-        const Duration(seconds: 3),
-            () => Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (_) => email!=null||username != null? const HomePage():const LoginScreen(),
+    SharedPreferences.getInstance().then(
+      (value) {
+        email = value.getString("email");
+        username = value.getString("username");
+        token = value.getString("token");
+        timer = Timer(
+          const Duration(seconds: 1),
+          () => Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (_) => FutureBuilder(
+                future:
+                    Services.getUser(username ?? '', email ?? ''),
+                builder: (context, snapshot) {
+                    if (snapshot.hasData&&snapshot.data != null) {
+                      User? user = snapshot.data as User;
+                      return ChangeNotifierProvider<UserNotifier>.value(
+                          value: UserNotifier(value: user),
+                          child: BlocProvider(
+                              create: (_) => DogBloc(user.token??''),
+                              child: const HomePage()));
+                    } else {
+                      return const LoginScreen();
+                    }
+                },
+              ),
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
     super.initState();
   }
 

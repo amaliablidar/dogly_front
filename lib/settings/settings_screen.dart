@@ -1,4 +1,5 @@
 import 'package:dogly_front/login/login_screen.dart';
+import 'package:dogly_front/settings/screens/change_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,6 +32,35 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 GestureDetector(
+                  onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>const ChangePasswordScreen())),
+                  child: Card(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: const [
+                              Icon(Icons.key),
+                              SizedBox(width: 20),
+                              Text(
+                                'Change Password',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          const Icon(Icons.arrow_forward_ios_rounded)
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
                   onTap: () {
                     showDialog(
                         context: context,
@@ -48,7 +78,7 @@ class SettingsScreen extends StatelessWidget {
                                   horizontal: 20, vertical: 20),
                               child: Column(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   const Padding(
                                     padding: EdgeInsets.symmetric(vertical: 15),
@@ -63,7 +93,7 @@ class SettingsScreen extends StatelessWidget {
                                   ),
                                   Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceEvenly,
                                     children: [
                                       SizedBox(
                                         width: 150,
@@ -71,8 +101,8 @@ class SettingsScreen extends StatelessWidget {
                                         child: ElevatedButton(
                                           style: ButtonStyle(
                                             backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    Colors.white),
+                                            MaterialStateProperty.all(
+                                                Colors.white),
                                             side: MaterialStateProperty.all(
                                               const BorderSide(
                                                   color: Colors.grey),
@@ -94,17 +124,17 @@ class SettingsScreen extends StatelessWidget {
                                         height: 50,
                                         child: ElevatedButton(
                                           onPressed: () async {
-                                          await SharedPreferences
-                                                        .getInstance()
-                                                    .then((value) {
-                                            value.remove("email");
-                                            value.remove("username");
-                                            value.remove("token");
-                                            Navigator.pushReplacement(
+                                            await SharedPreferences
+                                                .getInstance()
+                                                .then((value) {
+                                              value.remove("email");
+                                              value.remove("username");
+                                              value.remove("token");
+                                              Navigator.pushReplacement(
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (_) =>
-                                                      const LoginScreen(),
+                                                  const LoginScreen(),
                                                 ),
                                               );
                                             });

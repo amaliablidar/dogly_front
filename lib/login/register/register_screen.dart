@@ -267,6 +267,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (value) {
+
             if (value == null || value.isEmpty) {
               return "This field is required.";
             }

@@ -1,10 +1,15 @@
+import 'package:dogly_front/login/forgot_password_screen.dart';
 import 'package:dogly_front/login/register/register_screen.dart';
 import 'package:dogly_front/main_page.dart';
+import 'package:dogly_front/profile/models/user_notifier.dart';
 import 'package:dogly_front/widgets/error_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../dogs/bloc/dog_bloc.dart';
 import '../services/services.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -18,6 +23,8 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   const Spacer(),
                   Flexible(
-                    flex: 5,
+                    flex: 7,
                     child: Column(
                       children: [
                         Center(
@@ -75,103 +82,151 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   Flexible(
-                    flex: 10,
+                    flex: 12,
                     child: Column(
                       children: [
                         Flexible(
-                          flex: 3,
+                          flex: 4,
                           child: textField(
                             "Email or Username",
                             emailController,
                           ),
                         ),
                         Flexible(
-                          flex: 3,
+                          flex: 4,
                           child: textField("Password", passwordController,
                               isObscure: true),
                         ),
                         const Spacer(),
                         Flexible(
                           flex: 3,
-                          child: SizedBox(
+                          child: Container(
                             width: double.infinity,
-                            height: 60,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                SharedPreferences pref =
-                                    await SharedPreferences.getInstance();
-                                if (emailController.text.contains('@')) {
-                                  await Services.login(
-                                          password: passwordController.text,
-                                          email: emailController.text)
-                                      .then((value) {
-                                    if (value["success"]) {
-                                      pref.setString(
-                                          "email", emailController.text);
-                                      pref.setString("token", value["token"]);
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => const HomePage(),
-                                        ),
-                                      );
-                                    } else {
-                                      showDialog(
-                                        context: context,
-                                        builder: (_) {
-                                          return ErrorDialog(
-                                            message: value["message"],
-                                          );
-                                        },
-                                      );
-                                    }
-                                  });
-                                } else {
-                                  usernameController.text = emailController.text;
-                                  await Services.login(
-                                          password: passwordController.text,
-                                          username: usernameController.text,)
-                                      .then((value) {
-                                    if (value["success"]) {
-                                      pref.setString(
-                                          "username", usernameController.text);
-                                      pref.setString("token", value["token"]);
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) => const HomePage(),
-                                        ),
-                                      );
-                                    } else {
-                                      showDialog(
-                                        context: context,
-                                        builder: (_) {
-                                          return ErrorDialog(
-                                            message: value["message"],
-                                          );
-                                        },
-                                      );
-                                    }
-                                  });
-                                }
-                              },
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                backgroundColor: MaterialStateProperty.all(
-                                    Theme.of(context).primaryColor),
-                              ),
-                              child: const Text(
-                                'Login',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w600),
-                              ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Theme.of(context).primaryColor,
                             ),
+                            height: 60,
+                            child: isLoading
+                                ? const Center(
+                                    child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ))
+                                : ElevatedButton(
+                                    onPressed: () async {
+                                      setState(() => isLoading = true);
+                                      SharedPreferences pref =
+                                          await SharedPreferences.getInstance();
+                                      if (emailController.text.contains('@')) {
+                                        await Services.login(
+                                                password:
+                                                    passwordController.text,
+                                                email: emailController.text)
+                                            .then((value) {
+                                          if (value != null) {
+                                            pref.setString(
+                                                "email", emailController.text);
+                                            pref.setString(
+                                                "token", value.token ?? '');
+                                            Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (_) =>
+                                                    ChangeNotifierProvider<
+                                                        UserNotifier>.value(
+                                                  value: UserNotifier(
+                                                      value: value),
+                                                  child: BlocProvider(
+                                                    create: (_) => DogBloc(
+                                                        value.token ?? ''),
+                                                    child: const HomePage(),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          } else {
+                                            showDialog(
+                                              context: context,
+                                              builder: (_) {
+                                                return const ErrorDialog(
+                                                  message:
+                                                      "Something went wrong",
+                                                );
+                                              },
+                                            );
+                                          }
+                                        });
+                                      } else {
+                                        usernameController.text =
+                                            emailController.text;
+                                        await Services.login(
+                                          password: passwordController.text,
+                                          username: usernameController.text,
+                                        ).then((value) {
+                                          if (value != null) {
+                                            pref.setString("username",
+                                                usernameController.text);
+                                            pref.setString(
+                                                "token", value.token ?? '');
+                                            Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (_) =>
+                                                      ChangeNotifierProvider<
+                                                          UserNotifier>.value(
+                                                        value: UserNotifier(
+                                                            value: value),
+                                                        child: BlocProvider(
+                                                            create: (_) =>
+                                                                DogBloc(value
+                                                                        .token ??
+                                                                    ''),
+                                                            child:
+                                                                const HomePage()),
+                                                      )),
+                                            );
+                                          } else {
+                                            showDialog(
+                                              context: context,
+                                              builder: (_) {
+                                                return const ErrorDialog(
+                                                  message:
+                                                      "Something went wrong",
+                                                );
+                                              },
+                                            );
+                                          }
+                                        });
+                                      }
+                                    },
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Theme.of(context).primaryColor),
+                                    ),
+                                    child: const Text(
+                                      'Login',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
                           ),
                         ),
+                        Flexible(
+                            child: GestureDetector(
+                          onTap: () =>Navigator.push(context, MaterialPageRoute(builder: (_)=>const ForgotPasswordScreen())),
+                          child: Text(
+                            'Forgot password',
+                            style: GoogleFonts.openSans(fontSize: 12),
+                          ),
+                        )),
                       ],
                     ),
                   ),
