@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "dogly-371911",
+  "private_key_id": "bef3ce1ea8b704d3e8ab57bed7b46094dfe3257c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCvbI9OibmZyJty\n5T6oKdnPETohJrgBQdhFdvcXKg/p+zByPENS6cxdjBABLQCm/imbhr+sBaXnn8Ij\nJIbGHGThO2bgBRajQPO8ym5ITbA5zRzHc4KsdNsOtUk5BN4P0J5WHMFDlheAlh6D\n4eyGXjlm0kwKMHSR3DUkaa4AbIa5IYs4V7IOLBwf5mltkKxglAC0tOJ8XWTUophw\nR3eXIyW8kbxvy0yyvcMgn2v0dR9+0DAXulx5UEV59w5cS57orG58D42Vim5wYnY4\nijSVBVQrXYEbQBkmFCfTCBnCLLVZGSZAKFJqRJsFgEeNLSCw3ZhNTxvRa2YsiVtH\nCzHNjIZ3AgMBAAECggEAAi54bcKas0XiYQBm0hKLKd8N+QGRQjq+ZMbA9eHJBuDf\nzlvffnV33CX0wP79RhZdEBkR4yLC2GmNMYCvyGDsBD0H33tQt8EEBvIBgxasPVvG\nothV5K0jWEB646Gi3VF71phO8vc33ZqAUKWLmnQrhJLS7UGDAZlac9R4nHq9BipW\nSm9fw+ACbGNfSiAY5q3ZCdQpFoc/6g+vrWXtNHN0Yh63U3MjNT19KISj9VYyuBak\nPWo7BLPMvAXnOj2YtZg5Yl4vQpCtmtVybXxqfHx27LAzwnSdrG3GcDgBMMS9B3hY\nncEsva2X8nHT3rt6Vtlry6gY/gigpuoppKSucbDAEQKBgQD3UpcPoNd+R724JN+D\n4F13F7vksYLYKAZtMgwkQDy9pb0/WD8uYzs6EGYgktgVFdzAoyt0M4nmFgZetVHT\nXa5O5XYpojlMY/BPEiigx6o8nCto8XfS72oHANIYL3lLLmrhRbA3F73f5Xgn9YPs\njV0lrxvZuqKsr7WoIFdCaL5hiQKBgQC1lDBlGOfXM6EZGSPM2dA57kPGm1Ek646+\niMziJB7/n8A+2JRkjXwgxskB4vpQXdgBL05g6XvKjsXjb275V9BFGHZTsgBabX1g\n96C45d80GGwQav/Uzj0scfQ6f4/72TVPT/kM62ScVI8XkFO+Ppcs3G16lm6scFIc\ncGq4TsGn/wKBgCig6qvokj3ubx4nAIjbfL8pqPYiqwnzWUrq48+4tcG5zmLvjkGC\nj6I0O3KybMjZ9I+4vlSyer7Pc3BvfOeqBg5z53tjaOJBsKJsqzvuUOrwBLmSoUqH\nhfVsjxbmBZjyISCsoAwM3GZBfgGidW+QsXKVV4/m9v5DRyY9WdhQ+KVxAoGBAKGG\naKKWTC7gy68i8PjazeOqs3nqUn2wWfPeh7unfDfTKVX+ncrxHXmeu9LE0f1J7cvo\nBCYrrSZcaWbPiv2eAzRj9WawkqXefkkTH1M7kZmrG/5i4J+yszJlUGf1b+UOrOCX\n+KlogMCcbAn/Jq+2yA5tK6qARYV6CWEpE5ZO4PCLAoGAeh882YdvO86nUv8xomnP\nKdE+AnovSRIZz0gq5okLgRpl9QW0SA2NAJWr6/ACnltWbYNmUwUjCEudmZKULxXE\n48m/hEdXGkTRUICwpiQG9xo6I+pCJnaEXCeu9+i+7auv4vsxcaPXtWO7YVdVgSif\njbizLHP4sW0uN7QpRi8b130=\n-----END PRIVATE KEY-----\n",
+  "client_email": "dogly-service-account@dogly-371911.iam.gserviceaccount.com",
+  "client_id": "107032752937524508690",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/dogly-service-account%40dogly-371911.iam.gserviceaccount.com"
+}
